@@ -4,7 +4,7 @@ use yew::{function_component, html, Html};
 use yew_router::{BrowserRouter, Routable, Switch};
 
 #[derive(Clone, Routable, PartialEq)]
-enum Routes {
+pub enum Routes {
     #[at("/")]
     Login,
     #[at("/test")]
