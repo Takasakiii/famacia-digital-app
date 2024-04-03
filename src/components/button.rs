@@ -1,4 +1,4 @@
-use yew::{Callback, classes, function_component, html, Html, Properties};
+use yew::{classes, function_component, html, Callback, Html, Properties};
 
 #[derive(PartialEq, Properties)]
 pub struct ButtonProps {
@@ -7,7 +7,7 @@ pub struct ButtonProps {
     pub color: Option<&'static str>,
     #[prop_or_default]
     pub full_width: bool,
-    pub on_click: Callback<()>
+    pub on_click: Callback<()>,
 }
 
 #[function_component(Button)]
@@ -18,12 +18,10 @@ pub fn button(props: &ButtonProps) -> Html {
         None
     };
     let classes = classes!("button", full_width, props.color);
-    
+
     let on_click_callback = {
         let callback = props.on_click.clone();
-        Callback::from(move |_| {
-            callback.emit(())
-        })
+        Callback::from(move |_| callback.emit(()))
     };
 
     html! {

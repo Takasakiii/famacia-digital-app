@@ -5,10 +5,9 @@ fn greet(name: &str) -> String {
 }
 
 #[tauri::command]
-fn login(user: &str, password: &str) -> bool {
-    user == "user" && password == "password"
+fn login(email: &str, password: &str) -> bool {
+    email == "user@email.com" && password == "password"
 }
-
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {

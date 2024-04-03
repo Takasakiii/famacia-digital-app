@@ -1,8 +1,8 @@
-use wasm_bindgen::JsValue;
+use serde_wasm_bindgen::{from_value, to_value};
 use wasm_bindgen::prelude::wasm_bindgen;
+use wasm_bindgen::JsValue;
 use web_sys::HtmlInputElement;
 use yew::{Callback, TargetCast, UseStateHandle};
-use serde_wasm_bindgen::{from_value, to_value};
 
 pub fn get_inline_style(css: &[(&str, Option<&str>)]) -> String {
     css.iter()
@@ -32,7 +32,7 @@ extern "C" {
 pub async fn call_tauri<T, J>(cmd: &str, args: &T) -> J
 where
     T: serde::ser::Serialize,
-    J: serde::de::DeserializeOwned
+    J: serde::de::DeserializeOwned,
 {
     let args = to_value(args).unwrap();
     let response = invoke(cmd, args).await;

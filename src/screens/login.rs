@@ -1,19 +1,20 @@
-use serde::Serialize;
 use crate::components::button::Button;
 use crate::components::input::Input;
 use crate::components::screen_center::ScreenCenter;
 use crate::components::screen_padding::ScreenPadding;
 use crate::components::spacer::Spacer;
 use crate::components::title::Title;
-use yew::{Callback, function_component, html, Html, use_state};
-use yew::platform::spawn_local;
-use yew_router::hooks::use_navigator;
+use crate::hooks::toast_hook::{ToastControls, ToastInfo};
 use crate::routes::Routes;
 use crate::utils::call_tauri;
+use serde::Serialize;
+use yew::platform::spawn_local;
+use yew::{function_component, html, use_context, use_state, Callback, Html};
+use yew_router::hooks::use_navigator;
 
 #[derive(Serialize)]
 struct LoginTauri<'a> {
-    user: &'a str,
+    email: &'a str,
     password: &'a str,
 }
 
@@ -22,6 +23,7 @@ pub fn login_screen() -> Html {
     let email = use_state(String::new);
     let password = use_state(String::new);
     let navigator = use_navigator().unwrap();
+    let toast = use_context::<ToastControls>().expect("no toast context");
 
     let void_callback = Callback::from(move |_| {});
 
@@ -32,14 +34,25 @@ pub fn login_screen() -> Html {
             let email = email.clone();
             let password = password.clone();
             let navigator = navigator.clone();
+            let toast = toast.clone();
             spawn_local(async move {
-                let is_logged: bool = call_tauri("login", &LoginTauri {
-                    user: &email,
-                    password: &password,
-                }).await;
+                let is_logged: bool = call_tauri(
+                    "login",
+                    &LoginTauri {
+                        email: &email,
+                        password: &password,
+                    },
+                )
+                .await;
 
                 if is_logged {
                     navigator.push(&Routes::Test);
+                } else {
+                    log::info!("emiti");
+                    toast.show_toast.emit(ToastInfo {
+                        message: "Falha ao logar".to_string(),
+                        color: "is-danger".to_string(),
+                    })
                 }
             });
         })
