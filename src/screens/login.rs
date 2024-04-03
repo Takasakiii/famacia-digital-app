@@ -48,7 +48,6 @@ pub fn login_screen() -> Html {
                 if is_logged {
                     navigator.push(&Routes::Test);
                 } else {
-                    log::info!("emiti");
                     toast.show_toast.emit(ToastInfo {
                         message: "Falha ao logar".to_string(),
                         color: "is-danger".to_string(),

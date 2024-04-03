@@ -33,7 +33,6 @@ pub fn use_toast() -> ToastControls {
             let toast_info = toast_info.clone();
             let current_toast = current_toast.clone();
             spawn_local(async move {
-                log::info!("1: {:?}", &toast_info);
                 if toast_info.is_empty() {
                     return;
                 }
@@ -41,7 +40,6 @@ pub fn use_toast() -> ToastControls {
                 let popped_toast = new_list.pop_front();
                 toast_info.set(new_list);
                 current_toast.set(popped_toast);
-                log::info!("{:?}", &toast_info);
                 Delay::new(Duration::from_secs(5)).await;
                 current_toast.set(None);
             })
