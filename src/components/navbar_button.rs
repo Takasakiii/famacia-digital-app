@@ -1,4 +1,4 @@
-use yew::{classes, function_component, html, Html, Properties, use_memo};
+use yew::{classes, function_component, html, use_memo, Html, Properties};
 use yew_router::hooks::use_location;
 use yew_router::prelude::Link;
 use yew_router::Routable;

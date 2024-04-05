@@ -10,7 +10,6 @@ pub struct ScreenCenterProps {
 pub fn screen_center(props: &ScreenCenterProps) -> Html {
     let min_height = use_media_query("(min-height: 490px)");
 
-
     if min_height {
         let css = css!(
             r#"
@@ -25,10 +24,10 @@ pub fn screen_center(props: &ScreenCenterProps) -> Html {
             "#
         );
         html! {
-        <div class={css}>
-            {props.children.clone()}
-        </div>
-    }
+            <div class={css}>
+                {props.children.clone()}
+            </div>
+        }
     } else {
         props.children.clone()
     }

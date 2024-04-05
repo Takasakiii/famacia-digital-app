@@ -1,9 +1,9 @@
+use crate::components::navbar::Navbar;
 use crate::screens::login::LoginScreen;
+use crate::screens::pharmacies::Pharmacies;
 use crate::test::Test;
 use yew::{function_component, html, Html};
 use yew_router::{BrowserRouter, Routable, Switch};
-use crate::components::navbar::Navbar;
-use crate::screens::pharmacies::Pharmacies;
 
 #[derive(Clone, Routable, PartialEq)]
 pub enum Routes {
@@ -24,7 +24,7 @@ fn switch(routes: Routes) -> Html {
                 <Navbar />
                 <Switch<LoggedRoutes> render={switch_logged} />
             </>
-        }
+        },
     }
 }
 
@@ -42,7 +42,6 @@ fn switch_logged(logged_routes: LoggedRoutes) -> Html {
         LoggedRoutes::Medicines => html!(<Test />),
     }
 }
-
 
 #[function_component(Router)]
 pub fn route() -> Html {

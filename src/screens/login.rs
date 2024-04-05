@@ -1,6 +1,6 @@
 use serde::Serialize;
-use yew::{Callback, function_component, html, Html, use_context, use_state};
 use yew::platform::spawn_local;
+use yew::{function_component, html, use_context, use_state, Callback, Html};
 use yew_router::hooks::use_navigator;
 
 use crate::components::button::Button;
