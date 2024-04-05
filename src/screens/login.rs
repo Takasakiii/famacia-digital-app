@@ -1,9 +1,9 @@
 use crate::components::button::Button;
 use crate::components::input::Input;
+use crate::components::logo::Logo;
 use crate::components::screen_center::ScreenCenter;
 use crate::components::screen_padding::ScreenPadding;
 use crate::components::spacer::Spacer;
-use crate::components::title::Title;
 use crate::hooks::toast_hook::{ToastControls, ToastInfo};
 use crate::routes::Routes;
 use crate::utils::call_tauri;
@@ -46,7 +46,7 @@ pub fn login_screen() -> Html {
                 .await;
 
                 if is_logged {
-                    navigator.push(&Routes::Test);
+                    navigator.push(&Routes::Pharmacies);
                 } else {
                     toast.show_toast.emit(ToastInfo {
                         message: "Falha ao logar".to_string(),
@@ -60,7 +60,8 @@ pub fn login_screen() -> Html {
     html! {
         <ScreenCenter>
             <ScreenPadding>
-                <Title title="Farmacia Digital" center={true} />
+                // <Title title="Farmacia Digital" center={true} />
+                <Logo center={true} is_title={true} />
                 <Spacer height="1.5rem" />
                 <Input label="Email" input_type="email" placeholder="test@gmail.com" value_state={email} />
                 <Input label="Senha" input_type="password" placeholder="•••••••••" value_state={password} />

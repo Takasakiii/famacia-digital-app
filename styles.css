@@ -1,0 +1,8 @@
+@font-face {
+    font-family: Cookie;
+    src: url("Cookie-Regular.ttf");
+}
+
+.font-cookie {
+    font-family: Cookie, serif;
+}

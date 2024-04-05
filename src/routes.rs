@@ -7,6 +7,10 @@ use yew_router::{BrowserRouter, Routable, Switch};
 pub enum Routes {
     #[at("/")]
     Login,
+    #[at("/pharmacies")]
+    Pharmacies,
+    #[at("/medicines")]
+    Medicines,
     #[at("/test")]
     Test,
 }
@@ -15,6 +19,8 @@ fn switch(routes: Routes) -> Html {
     match routes {
         Routes::Login => html!(<LoginScreen />),
         Routes::Test => html!(<Test />),
+        Routes::Pharmacies => html!(<Test />),
+        Routes::Medicines => html!(<Test />),
     }
 }
 
