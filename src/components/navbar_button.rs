@@ -1,14 +1,14 @@
-use yew::{classes, function_component, html, use_memo, Html, Properties};
+use yew::{classes, function_component, html, Html, Properties, use_memo};
 use yew_router::hooks::use_location;
 use yew_router::prelude::Link;
 use yew_router::Routable;
 
-use crate::routes::Routes;
+use crate::routes::LoggedRoutes;
 
 #[derive(PartialEq, Properties)]
 pub struct NavbarButtonProps {
     pub label: &'static str,
-    pub route: Routes,
+    pub route: LoggedRoutes,
 }
 
 #[function_component(NavbarButton)]
@@ -25,6 +25,6 @@ pub fn navbar_button(props: &NavbarButtonProps) -> Html {
     };
 
     html! {
-        <Link<Routes> classes={classes!("navbar-item", normal_class)} to={props.route.clone()}>{props.label}</Link<Routes>>
+        <Link<LoggedRoutes> classes={classes!("navbar-item", normal_class)} to={props.route.clone()}>{props.label}</Link<LoggedRoutes>>
     }
 }

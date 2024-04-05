@@ -1,7 +1,8 @@
-use crate::components::navbar_button::NavbarButton;
-use crate::routes::Routes;
 use stylist::style;
 use yew::{classes, function_component, html, Html};
+
+use crate::components::navbar_button::NavbarButton;
+use crate::routes::LoggedRoutes;
 
 #[function_component(Navbar)]
 pub fn navbar() -> Html {
@@ -14,8 +15,8 @@ pub fn navbar() -> Html {
     html! {
         <nav class="navbar is-link is-fixed-top" role="navigation">
             <div class={classes}>
-                <NavbarButton label="Farmacias" route={Routes::Pharmacies} />
-                <NavbarButton label="Remedios" route={Routes::Medicines} />
+                <NavbarButton label="Farmacias" route={LoggedRoutes::Pharmacies} />
+                <NavbarButton label="Remedios" route={LoggedRoutes::Medicines} />
             </div>
         </nav>
     }

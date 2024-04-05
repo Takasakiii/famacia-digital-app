@@ -1,3 +1,8 @@
+use serde::Serialize;
+use yew::{Callback, function_component, html, Html, use_context, use_state};
+use yew::platform::spawn_local;
+use yew_router::hooks::use_navigator;
+
 use crate::components::button::Button;
 use crate::components::input::Input;
 use crate::components::logo::Logo;
@@ -5,12 +10,8 @@ use crate::components::screen_center::ScreenCenter;
 use crate::components::screen_padding::ScreenPadding;
 use crate::components::spacer::Spacer;
 use crate::hooks::toast_hook::{ToastControls, ToastInfo};
-use crate::routes::Routes;
+use crate::routes::LoggedRoutes;
 use crate::utils::call_tauri;
-use serde::Serialize;
-use yew::platform::spawn_local;
-use yew::{function_component, html, use_context, use_state, Callback, Html};
-use yew_router::hooks::use_navigator;
 
 #[derive(Serialize)]
 struct LoginTauri<'a> {
@@ -46,7 +47,7 @@ pub fn login_screen() -> Html {
                 .await;
 
                 if is_logged {
-                    navigator.push(&Routes::Pharmacies);
+                    navigator.push(&LoggedRoutes::Pharmacies);
                 } else {
                     toast.show_toast.emit(ToastInfo {
                         message: "Falha ao logar".to_string(),
