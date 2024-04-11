@@ -1,22 +1,28 @@
-use stylist::style;
-use yew::{classes, function_component, html, Html};
+use stylist::css;
+use stylist::yew::styled_component;
+use yew::{html, Html};
 
-use crate::components::navbar_button::NavbarButton;
-use crate::routes::LoggedRoutes;
-
-#[function_component(Navbar)]
+#[styled_component(Navbar)]
 pub fn navbar() -> Html {
-    let justify = style!("justify-content: center;")
-        .unwrap()
-        .get_class_name()
-        .to_owned();
-    let classes = classes!("navbar-brand", justify);
+    let back_button_css = css!(
+        r#"
+            width: 2rem;
+            display: flex;
+            justify-content: center;
+        "#
+    );
 
     html! {
-        <nav class="navbar is-link is-fixed-top" role="navigation">
-            <div class={classes}>
-                <NavbarButton label="Farmacias" route={LoggedRoutes::Pharmacies} />
-                <NavbarButton label="Remedios" route={LoggedRoutes::Medicines} />
+        <nav class="navbar is-info is-fixed-top" role="navigation">
+            <div class="navbar-brand">
+                // <a class="navbar-item">
+                //     <div class={back_button_css}>
+                //         <i class="fa-solid fa-chevron-left"></i>
+                //     </div>
+                // </a>
+                <a class="navbar-item" href="#">
+                    <img src="/imgs/logo.png" alt="Logo da prefeitura de Vargem Grande Paulista" />
+                </a>
             </div>
         </nav>
     }

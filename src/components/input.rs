@@ -3,7 +3,8 @@ use yew::{function_component, html, Html, Properties, UseStateHandle};
 
 #[derive(PartialEq, Properties)]
 pub struct InputProps {
-    pub label: &'static str,
+    #[prop_or_default]
+    pub label: Option<&'static str>,
     pub input_type: &'static str,
     pub placeholder: &'static str,
     pub value_state: UseStateHandle<String>,
@@ -15,10 +16,12 @@ pub fn input(props: &InputProps) -> Html {
 
     html! {
         <div class="field">
-          <label class="label">{props.label}</label>
-          <div class="control">
-            <input class="input" type={props.input_type} placeholder={props.placeholder} onchange={input_callback} value={(*props.value_state).clone()} />
-          </div>
+            if let Some(label) = props.label {
+                <label class="label">{label}</label>
+            }   
+            <div class="control">
+                <input class="input" type={props.input_type} placeholder={props.placeholder} onchange={input_callback} value={(*props.value_state).clone()} />
+            </div>
         </div>
     }
 }

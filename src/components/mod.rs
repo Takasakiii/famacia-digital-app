@@ -1,5 +1,5 @@
 pub mod button;
-mod card;
+pub mod card;
 pub mod input;
 pub mod logo;
 pub mod navbar;
