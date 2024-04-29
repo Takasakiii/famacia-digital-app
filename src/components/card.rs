@@ -1,16 +1,24 @@
-use yew::{function_component, html, Html};
-use crate::components::spacer::Spacer;
+use web_sys::MouseEvent;
+use yew::{AttrValue, Callback, function_component, html, Html, Properties};
+
+#[derive(PartialEq, Properties)]
+pub struct CardProps {
+    #[prop_or_default]
+    pub title: AttrValue,
+    #[prop_or_default]
+    pub children: Html,
+    #[prop_or_default]
+    pub onclick: Callback<MouseEvent>,
+}
 
 #[function_component(Card)]
-pub fn card() -> Html {
+pub fn card(props: &CardProps) -> Html {
     html! {
-        <div class="card">
+        <div class="card" onclick={ &props.onclick } >
             <div class="card-content">
-                <p class="title is-4">{"UBS Jardim Centro"}</p>
+                <p class="title is-4">{ &props.title }</p>
                 <div class="content">
-                    {"Exemplo de avenida, 34 - Jardim Centro"}
-                    <br/>
-                    {"CEP: 06500-000"}
+                    { props.children.clone() }
                 </div>
             </div>
         </div>
