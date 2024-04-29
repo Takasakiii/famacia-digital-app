@@ -1,31 +1,19 @@
-use yew::{Callback, classes, function_component, Html, html, use_effect_with, use_state};
+use yew::{Callback, classes, function_component, Html, html, use_state};
 use yew_router::prelude::use_navigator;
+
 use crate::components::button::Button;
-use crate::components::screen_padding::ScreenPadding;
 use crate::components::card::Card;
 use crate::components::input::Input;
-use crate::data::Pharmacy;
+use crate::components::screen_padding::ScreenPadding;
+use crate::hooks::pharmacy::use_pharmacies;
 use crate::routes::Routes;
-use crate::utils::{GetPharmaciesRequest, GetPharmaciesResponse};
 
 #[function_component(SearchView)]
 pub fn search_view() -> Html {
     let search_input = use_state(String::new);
-    let pharmacies = use_state(Vec::<Pharmacy>::new);
-    {
-        let search_input = search_input.clone();
-        let pharmacies = pharmacies.clone();
-
-        use_effect_with(search_input.clone(), move |_| {
-            wasm_bindgen_futures::spawn_local(async move {
-                let result: GetPharmaciesResponse =
-                    crate::utils::call_tauri("get_pharmacies", &GetPharmaciesRequest {
-                        search: Some(&search_input)
-                    }).await;
-                pharmacies.set(result.pharmacies);
-            });
-        });
-    }
+    let pharmacies = {
+        use_pharmacies((*search_input).clone())
+    };
 
     let navigator = use_navigator().unwrap();
     let on_click = Callback::from(move |id: i8| {

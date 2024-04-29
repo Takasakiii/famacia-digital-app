@@ -1,25 +1,8 @@
-use serde::{Deserialize, Serialize};
 use serde_wasm_bindgen::{from_value, to_value};
 use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsValue;
 use web_sys::HtmlInputElement;
 use yew::{Callback, TargetCast, UseStateHandle};
-use crate::data::Pharmacy;
-
-#[derive(Deserialize, Serialize)]
-pub struct GetPharmaciesRequest<'a> {
-    pub search: Option<&'a str>,
-}
-
-#[derive(Deserialize)]
-pub struct GetPharmaciesResponse {
-    pub pharmacies: Vec<Pharmacy>,
-}
-
-#[derive(Deserialize, Serialize)]
-pub struct GetPharmacyRequest {
-    pub id: i8,
-}
 
 pub fn get_inline_style(css: &[(&str, Option<&str>)]) -> String {
     css.iter()

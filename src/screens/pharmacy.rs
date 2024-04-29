@@ -1,9 +1,8 @@
 use stylist::yew::styled_component;
-use yew::{Html, html, Properties, use_effect_with, use_state};
+use yew::{Html, html, Properties};
 use crate::components::screen_padding::ScreenPadding;
 use crate::components::card::Card;
-use crate::data::Pharmacy;
-use crate::utils::{call_tauri, GetPharmacyRequest};
+use crate::hooks::pharmacy::use_pharmacy;
 
 #[derive(PartialEq, Properties)]
 pub struct PharmacyViewProps {
@@ -12,22 +11,7 @@ pub struct PharmacyViewProps {
 
 #[styled_component(PharmacyView)]
 pub fn pharmacy(props: &PharmacyViewProps) -> Html {
-    let pharmacy = use_state(|| None::<Pharmacy>);
-
-    let id = props.id;
-    {
-        let pharmacy = pharmacy.clone();
-        use_effect_with(id, move |_| {
-            wasm_bindgen_futures::spawn_local(async move {
-                let result =
-                    call_tauri("get_pharmacy", &GetPharmacyRequest {
-                        id,
-                    }).await;
-
-                pharmacy.set(result);
-            });
-        });
-    }
+    let pharmacy = use_pharmacy(props.id);
 
     let iframe_css = css!(
         r#"
@@ -40,7 +24,7 @@ pub fn pharmacy(props: &PharmacyViewProps) -> Html {
 
     html! {
         <ScreenPadding>
-            if let Some(pharmacy) = &*pharmacy {
+            if let Some(pharmacy) = pharmacy {
                 <Card title={ pharmacy.name.clone() }>
                     <p>
                         <b>{"Endereço: "}</b>
