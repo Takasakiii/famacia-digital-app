@@ -27,9 +27,7 @@ pub fn search_view() -> Html {
     let search_input = use_state(String::new);
     let search_type = use_state(|| SearchType::Pharmacy);
 
-    let pharmacies = {
-        use_pharmacies((*search_input).clone().into())
-    };
+    let pharmacies = use_pharmacies(Some((*search_input).clone().into()));
 
     let navigator = use_navigator().unwrap();
     let on_click = Callback::from(move |id: i8| {

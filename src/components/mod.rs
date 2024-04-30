@@ -8,3 +8,5 @@ pub mod screen_center;
 pub mod screen_padding;
 pub mod spacer;
 pub mod toast;
+pub mod medication_card;
+pub mod pharmacy_card;

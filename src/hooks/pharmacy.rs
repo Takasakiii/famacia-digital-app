@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use yew::{AttrValue, hook, use_effect_with, use_state};
 use crate::utils::call_tauri;
 
-#[derive(Deserialize, Clone)]
+#[derive(Deserialize, Clone, PartialEq)]
 pub struct Pharmacy {
     pub id: i8,
     pub name: String,
@@ -13,8 +13,8 @@ pub struct Pharmacy {
 }
 
 #[derive(Deserialize, Serialize)]
-pub struct GetPharmaciesRequest<'a> {
-    pub search: Option<&'a str>,
+pub struct GetPharmaciesRequest {
+    pub search: Option<String>,
 }
 
 #[derive(Deserialize)]
@@ -28,7 +28,7 @@ pub struct GetPharmacyRequest {
 }
 
 #[hook]
-pub fn use_pharmacies(search: AttrValue) -> Vec<Pharmacy> {
+pub fn use_pharmacies(search: Option<AttrValue>) -> Vec<Pharmacy> {
     let pharmacies = use_state(Vec::<Pharmacy>::new);
     {
         let pharmacies = pharmacies.clone();
@@ -37,7 +37,7 @@ pub fn use_pharmacies(search: AttrValue) -> Vec<Pharmacy> {
             wasm_bindgen_futures::spawn_local(async move {
                 let result: GetPharmaciesResponse =
                     call_tauri("get_pharmacies", &GetPharmaciesRequest {
-                        search: Some(search.as_str())
+                        search: search.map(|x| x.as_str().to_owned())
                     }).await;
                 pharmacies.set(result.pharmacies);
             });
