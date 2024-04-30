@@ -14,7 +14,7 @@ pub struct PharmacyViewProps {
 #[styled_component(PharmacyView)]
 pub fn pharmacy(props: &PharmacyViewProps) -> Html {
     let pharmacy = use_pharmacy(props.id);
-    let medications = use_medications();
+    let medications = use_medications(None);
 
     let iframe_css = css!(
         r#"

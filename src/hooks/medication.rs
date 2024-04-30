@@ -1,4 +1,4 @@
-use yew::hook;
+use yew::{AttrValue, hook};
 
 #[derive(Clone, PartialEq)]
 pub struct Medication {
@@ -26,8 +26,18 @@ pub static MEDICATIONS: [Medication; 3] = [
 ];
 
 #[hook]
-pub fn use_medications() -> Vec<Medication> {
-    MEDICATIONS.to_vec()
+pub fn use_medications(search: Option<AttrValue>) -> Vec<Medication> {
+    let search = search.map(|search| search.to_string());
+    if let Some(search) = search {
+        let search = search.to_lowercase();
+        MEDICATIONS
+            .iter()
+            .filter(|medication| medication.name.to_lowercase().contains(&search))
+            .cloned()
+            .collect()
+    } else {
+        MEDICATIONS.iter().cloned().collect()
+    }
 }
 
 #[hook]
