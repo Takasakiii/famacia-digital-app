@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use yew::{hook, use_effect, use_state};
+use yew::{AttrValue, hook, use_effect_with, use_state};
 use crate::utils::call_tauri;
 
 #[derive(Deserialize, Clone)]
@@ -28,12 +28,12 @@ pub struct GetPharmacyRequest {
 }
 
 #[hook]
-pub fn use_pharmacies(search: String) -> Vec<Pharmacy> {
+pub fn use_pharmacies(search: AttrValue) -> Vec<Pharmacy> {
     let pharmacies = use_state(Vec::<Pharmacy>::new);
     {
         let pharmacies = pharmacies.clone();
 
-        use_effect(move || {
+        use_effect_with(search.clone(), move |_| {
             wasm_bindgen_futures::spawn_local(async move {
                 let result: GetPharmaciesResponse =
                     call_tauri("get_pharmacies", &GetPharmaciesRequest {
@@ -53,7 +53,7 @@ pub fn use_pharmacy(id: i8) -> Option<Pharmacy> {
     {
         let pharmacy = pharmacy.clone();
 
-        use_effect(move || {
+        use_effect_with(id, move |_| {
             wasm_bindgen_futures::spawn_local(async move {
                 let result =
                     call_tauri("get_pharmacy", &GetPharmacyRequest {

@@ -28,7 +28,7 @@ pub fn search_view() -> Html {
     let search_type = use_state(|| SearchType::Pharmacy);
 
     let pharmacies = {
-        use_pharmacies((*search_input).clone())
+        use_pharmacies((*search_input).clone().into())
     };
 
     let navigator = use_navigator().unwrap();
