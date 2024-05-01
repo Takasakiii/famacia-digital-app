@@ -20,7 +20,7 @@ pub fn medication(props: &MedicationViewProps) -> Html {
     html! {
         <ScreenPadding>
             if let Some(medication) = medication {
-                <MedicationCard medication={ medication } />
+                <MedicationCard medication={ medication } expanded={true} />
 
                 <h4 class="title is-4 my-5">{"Disponível em:"}</h4>
                 {

@@ -5,24 +5,44 @@ pub struct Medication {
     pub id: i8,
     pub name: &'static str,
     pub concentration: &'static str,
+    pub class: &'static str,
+    pub presentation: &'static str,
+    pub prescription_needed: bool,
 }
 
-pub static MEDICATIONS: [Medication; 3] = [
+pub static MEDICATIONS: [Medication; 4] = [
     Medication {
         id: 1,
         name: "Dipirona",
         concentration: "500mg",
+        class: "Analgésico",
+        presentation: "Comprimido",
+        prescription_needed: false,
     },
     Medication {
         id: 2,
         name: "Paracetamol",
         concentration: "750mg",
+        class: "Analgésico",
+        presentation: "Comprimido",
+        prescription_needed: false,
     },
     Medication {
         id: 3,
         name: "Ibuprofeno",
         concentration: "400mg",
+        class: "Anti-inflamatório",
+        presentation: "Líquido",
+        prescription_needed: false,
     },
+    Medication {
+        id: 4,
+        name: "Ritalina",
+        concentration: "10mg",
+        class: "Estimulante",
+        presentation: "Comprimido",
+        prescription_needed: true,
+    }
 ];
 
 #[hook]
