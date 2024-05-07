@@ -12,9 +12,9 @@ pub fn get_inline_style(css: &[(&str, Option<&str>)]) -> String {
         .join(";")
 }
 
-pub fn get_html_change_value(state: &UseStateHandle<String>) -> Callback<yew::prelude::Event> {
+pub fn get_html_change_value(state: &UseStateHandle<String>) -> Callback<yew::prelude::InputEvent> {
     let state_clone = state.clone();
-    Callback::from(move |e: yew::prelude::Event| {
+    Callback::from(move |e: yew::prelude::InputEvent| {
         let input = e.target_dyn_into::<HtmlInputElement>();
         if let Some(input) = input {
             let value = input.value();

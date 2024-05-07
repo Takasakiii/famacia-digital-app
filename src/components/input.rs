@@ -20,7 +20,7 @@ pub fn input(props: &InputProps) -> Html {
                 <label class="label">{label}</label>
             }   
             <div class="control">
-                <input class="input" type={props.input_type} placeholder={props.placeholder} onchange={input_callback} value={(*props.value_state).clone()} />
+                <input class="input" type={props.input_type} placeholder={props.placeholder} oninput={input_callback} value={(*props.value_state).clone()} />
             </div>
         </div>
     }
