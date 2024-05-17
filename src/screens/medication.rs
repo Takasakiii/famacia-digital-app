@@ -7,6 +7,7 @@ use crate::components::screen_padding::ScreenPadding;
 use crate::components::stock_card::{DisplayType, StockCard};
 use crate::hooks::medication::use_medication;
 use crate::hooks::stock::use_medication_stock;
+use crate::utils::get_default;
 
 #[derive(PartialEq, Properties)]
 pub struct MedicationViewProps {
@@ -27,11 +28,11 @@ pub fn medication(props: &MedicationViewProps) -> Html {
                 <MedicationCard medication={ medication.clone() } expanded={true} />
                 <Card title="Informações" icon="fas fa-info fa-2x">
                     <p class="has-text-justified">
-                        {"O medicamento "} <strong>{ medication.name.unwrap_or_else(|| "Não informado".to_owned()) }</strong>
-                        {" é um medicamento do tipo "} <strong>{ medication.medication_type.unwrap_or_else(|| "Não informado".to_owned()) }</strong> 
-                        {", apresentado por meio de "} <strong>{ medication.presentation.unwrap_or_else(|| "Não informado".to_owned()) }</strong> 
-                        {", com uma concentração de "} <strong>{ medication.concentration.unwrap_or_else(|| "Não informado".to_owned()) }</strong> {". "}
-                        {"Ele é administrado por via "} <strong>{ medication.administration_form.unwrap_or_else(|| "Não informado".to_owned()) }</strong> 
+                        {"O medicamento "} <strong>{ get_default(medication.name) }</strong>
+                        {" é do tipo "} <strong>{ get_default(medication.medication_type) }</strong> 
+                        {", sendo apresentado por meio de "} <strong>{ get_default(medication.presentation) }</strong> 
+                        {", com uma concentração de "} <strong>{ get_default(medication.concentration) }</strong> {". "}
+                        {"Ele é administrado por via "} <strong>{ get_default(medication.administration_form) }</strong> 
                         {", "} <strong>{ if medication.continuous_use == Some(1) { "deve" } else { "não deve" } }</strong> {" ser usado continuamente "}
                         {"e "} <strong>{ if medication.fractionable == Some(1) { "pode" } else { "não pode" } }</strong> {" ser fracionado."}
                     </p>

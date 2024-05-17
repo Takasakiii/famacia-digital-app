@@ -1,6 +1,6 @@
 use serde_wasm_bindgen::{from_value, to_value};
-use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsValue;
+use wasm_bindgen::prelude::wasm_bindgen;
 use web_sys::HtmlInputElement;
 use yew::{AttrValue, Callback, TargetCast, UseStateHandle};
 
@@ -45,4 +45,8 @@ pub fn format_cep(cep: AttrValue) -> String {
     } else {
         cep.to_string()
     }
+}
+
+pub fn get_default(value: Option<String>) -> AttrValue {
+    value.map_or_else(|| "Não informado".into(), |x| AttrValue::from(x))
 }

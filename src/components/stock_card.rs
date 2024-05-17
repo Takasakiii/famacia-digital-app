@@ -4,6 +4,7 @@ use yew_router::prelude::use_navigator;
 use crate::components::card::Card;
 use crate::hooks::stock::Stock;
 use crate::routes::Routes;
+use crate::utils::get_default;
 
 #[derive(PartialEq, Properties)]
 pub struct StockCardProps {
@@ -38,14 +39,15 @@ pub fn stock_card(props: &StockCardProps) -> Html {
     };
     
     html! {
-        <Card {onclick} {icon} title={ title.clone().unwrap_or_else(String::new) }>
+        <Card {onclick} {icon} title={ get_default(title.clone()) }>
             <p>
                 <b>{"Concentração: "}</b>
-                { stock.concentration.as_ref().unwrap_or(&"Não informado".to_owned()) }
+                { get_default(stock.concentration.clone()) }
             </p>
             <p>
                 <b>{"Estoque: "}</b>
                 { stock.balance.unwrap_or(0.0) }
+                {" unidades"}
             </p>
         </Card>
     }

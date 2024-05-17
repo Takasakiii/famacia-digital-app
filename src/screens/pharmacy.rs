@@ -7,7 +7,7 @@ use crate::components::screen_padding::ScreenPadding;
 use crate::components::stock_card::{DisplayType, StockCard};
 use crate::hooks::pharmacy::use_pharmacy;
 use crate::hooks::stock::use_pharmacy_stock;
-use crate::utils::format_cep;
+use crate::utils::{format_cep, get_default};
 
 #[derive(PartialEq, Properties)]
 pub struct PharmacyViewProps {
@@ -31,13 +31,13 @@ pub fn pharmacy(props: &PharmacyViewProps) -> Html {
     html! {
         <ScreenPadding>
             if let Some(pharmacy) = pharmacy {
-                <Card title={ pharmacy.name.unwrap_or_else(String::new) } 
+                <Card title={ get_default(pharmacy.name) } 
                       icon="fas fa-house-chimney-medical fa-2x">
                     <p>
                         <b>{"Endereço: "}</b>
-                        {format!("{}, {} - {}", &pharmacy.address.unwrap_or_else(String::new),
-                            &pharmacy.number.unwrap_or_else(String::new),
-                            &pharmacy.neighborhood.unwrap_or_else(String::new))}
+                        {format!("{}, {} - {}", get_default(pharmacy.address),
+                            get_default(pharmacy.number),
+                            get_default(pharmacy.neighborhood))}
                     </p>
                     <p>
                         <b>{"CEP: "}</b>

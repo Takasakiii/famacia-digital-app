@@ -1,8 +1,10 @@
 use yew::{Callback, function_component, html, Html, Properties};
 use yew_router::prelude::use_navigator;
+
 use crate::components::card::Card;
 use crate::hooks::medication::Medication;
 use crate::routes::Routes;
+use crate::utils::get_default;
 
 #[derive(PartialEq, Properties)]
 pub struct MedicationCardProps {
@@ -23,19 +25,17 @@ pub fn medication_card(props: &MedicationCardProps) -> Html {
         })
     };
     
-    let medication = medication.clone();
-
     html! {
         <Card {onclick} 
-              title={ medication.name.unwrap_or_else(String::new) } 
+              title={ get_default(medication.name.clone()) } 
               icon="fas fa-pills fa-2x">
             <p>
                 <b>{"Concentração: "}</b>
-                { medication.concentration.unwrap_or_else(|| "Não informado".to_owned()) }
+                { get_default(medication.concentration.clone()) }
             </p>
             <p>
                 <b>{"Princípio ativo: "}</b>
-                { medication.active_principle.unwrap_or_else(|| "Não informado".to_owned()) }
+                { get_default(medication.active_principle.clone()) }
             </p>
             if *expanded {
                 <p>
@@ -44,8 +44,7 @@ pub fn medication_card(props: &MedicationCardProps) -> Html {
                         {"Sim"}
                     } else {
                         {"Não"}
-                    } 
-                    
+                    }
                 </p>
             }
         </Card>
