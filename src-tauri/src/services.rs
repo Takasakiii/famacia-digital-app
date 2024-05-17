@@ -1,4 +1,4 @@
-use isahc::{AsyncBody, AsyncReadResponseExt};
+use reqwest::Response;
 use serde::{Deserialize, Serialize};
 
 const BASE_URL: &str = "http://projetointegradorvi.ddns.net:5000/api";
@@ -70,32 +70,32 @@ pub struct Stock {
 }
 
 pub async fn get_pharmacies() -> Vec<Pharmacy> {
-    let req = isahc::get_async(format!("{}/get_json_farmac/all", BASE_URL)).await;
+    let req = reqwest::get(format!("{}/get_json_farmac/all", BASE_URL)).await;
     parse(req, "buscar farmácias").await
 }
 
 pub async fn get_medications() -> Vec<Medication> {
-    let req = isahc::get_async(format!("{}/get_json_medic/all", BASE_URL)).await;
+    let req = reqwest::get(format!("{}/get_json_medic/all", BASE_URL)).await;
     parse(req, "buscar medicamentos").await
 }
 
 pub async fn get_stock_by_pharmacy(pharmacy_id: i8) -> Vec<Stock> {
-    let req = isahc::get_async(format!("{}/get_json_est_farm/{}", BASE_URL, pharmacy_id)).await;
+    let req = reqwest::get(format!("{}/get_json_est_farm/{}", BASE_URL, pharmacy_id)).await;
     parse(req, "buscar estoque").await
 }
 
 pub  async fn get_stock_by_medication(medication_name: &str) -> Vec<Stock> {
-    let req = isahc::get_async(format!("{}/get_json_est_medic/{}", BASE_URL, medication_name)).await;
+    let req = reqwest::get(format!("{}/get_json_est_medic/{}", BASE_URL, medication_name)).await;
     parse(req, "buscar estoque").await
 }
 
-async fn parse<T>(req: Result<isahc::Response<AsyncBody>, isahc::Error>, identifier: &str) -> Vec<T>
+async fn parse<T>(req: reqwest::Result<Response>, identifier: &str) -> Vec<T>
 where
     T: for<'de> Deserialize<'de>
 {
     println!("Realizando request '{}'...", identifier);
     match req {
-        Ok(mut res) => {
+        Ok(res) => {
             let body = res.text().await.expect("Erro ao converter resposta em texto");
             let data = serde_json::from_str(&body);
             
