@@ -21,11 +21,13 @@ pub enum DisplayType {
 pub fn stock_card(props: &StockCardProps) -> Html {
     let StockCardProps { stock, display_type } = props;
     
-    let (title, route) = match display_type {
+    let (title, route, icon) = match display_type {
         DisplayType::Pharmacy => (&stock.pharmacy_name, 
-                                  Routes::Pharmacy { id: stock.pharmacy.unwrap_or(0) }),
+                                  Routes::Pharmacy { id: stock.pharmacy.unwrap_or(0) },
+                                  "fas fa-house-chimney-medical fa-2x"),
         DisplayType::Medication => (&stock.medication_name, 
-                                    Routes::Medication { id: stock.medication.unwrap_or(0) }),
+                                    Routes::Medication { id: stock.medication.unwrap_or(0) },
+                                    "fas fa-pills fa-2x"),
     };
 
     let onclick = {
@@ -36,7 +38,7 @@ pub fn stock_card(props: &StockCardProps) -> Html {
     };
     
     html! {
-        <Card {onclick} title={ title.clone().unwrap_or_else(String::new) }>
+        <Card {onclick} {icon} title={ title.clone().unwrap_or_else(String::new) }>
             <p>
                 <b>{"Concentração: "}</b>
                 { stock.concentration.as_ref().unwrap_or(&"Não informado".to_owned()) }

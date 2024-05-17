@@ -43,14 +43,17 @@ pub fn search_view() -> Html {
             <label class="label">{"Pesquisar por:"}</label>
             <div class="grid">
                 <div class="cell">
-                    <Button text="Farmacia" class={classes!("is-fullwidth")}
-                        color={ get_type_color(SearchType::Pharmacy, &search_type) }
-                        on_click={ pharmacy_click }/>
+                    <Button text="Farmácia" 
+                            class={classes!("is-fullwidth")}
+                            color={ get_type_color(SearchType::Pharmacy, &search_type) }
+                            on_click={ pharmacy_click }
+                            icon="fas fa-house-chimney-medical" />
                 </div>
                 <div class="cell">
                     <Button text="Medicamento" class={classes!("is-fullwidth")}
                         color={ get_type_color(SearchType::Medicine, &search_type) }
-                        on_click={ medicine_click }/>
+                        on_click={ medicine_click }
+                        icon="fas fa-prescription-bottle-medical" />
                 </div>
             </div>
             {

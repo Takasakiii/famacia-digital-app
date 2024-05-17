@@ -19,20 +19,26 @@ pub fn medication(props: &MedicationViewProps) -> Html {
         medication.as_ref().map(|medication| medication.name.as_ref().map(|name| name.clone().into())).flatten();
     
     let stock = use_medication_stock(name);
-    
 
     html! {
         <ScreenPadding>
             if let Some(medication) = medication {
                 <MedicationCard medication={ medication } expanded={true} />
+                <h4 class="title is-4 my-5">{"Farmácias com estoque"}</h4>
                 {
                     if let Some(stock) = stock {
-                        stock.iter().map(|stock| {
+                        if stock.is_empty() {
                             html! {
-                                <StockCard stock={ stock.clone() }
-                                    display_type={ DisplayType::Pharmacy } />
+                                <p>{"Nenhuma farmácia encontrada"}</p>
                             }
-                        }).collect::<Html>()
+                        } else {
+                            stock.iter().map(|stock| {
+                                html! {
+                                    <StockCard stock={ stock.clone() }
+                                        display_type={ DisplayType::Pharmacy } />
+                                }
+                            }).collect::<Html>()
+                        }   
                     } else {
                         html! {
                             <Loading />

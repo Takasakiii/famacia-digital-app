@@ -1,4 +1,6 @@
-use yew::{classes, function_component, html, Callback, Html, Properties, Classes};
+use stylist::css;
+use stylist::yew::styled_component;
+use yew::{classes, html, Callback, Html, Properties, Classes, AttrValue};
 
 #[derive(PartialEq, Properties)]
 pub struct ButtonProps {
@@ -11,15 +13,25 @@ pub struct ButtonProps {
     pub on_click: Option<Callback<()>>,
     #[prop_or_default]
     pub class: Option<Classes>,
+    #[prop_or_default]
+    pub icon: Option<AttrValue>,
 }
 
-#[function_component(Button)]
+#[styled_component(Button)]
 pub fn button(props: &ButtonProps) -> Html {
+    let icon_class = css!(
+        r#"
+            margin-right: 0.5rem;
+            margin-bottom: 0.25rem;
+        "#
+    );
+    
     let full_width = if props.full_width {
         Some("is-fullwidth")
     } else {
         None
     };
+    
     let classes = classes!("button", full_width, props.color, &props.class);
 
     let on_click_callback = {
@@ -30,6 +42,17 @@ pub fn button(props: &ButtonProps) -> Html {
     };
 
     html! {
-        <button class={classes} onclick={on_click_callback} >{props.text}</button>
+        <button class={classes} onclick={on_click_callback} >
+            {
+                if let Some(icon) = &props.icon {
+                    html! {
+                        <i class={classes!(icon, icon_class)}></i>
+                    }
+                } else {
+                    html! { }
+                }   
+            }
+            {props.text}
+        </button>
     }
 }

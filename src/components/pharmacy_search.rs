@@ -6,6 +6,7 @@ use crate::components::input::Input;
 use crate::components::loading::Loading;
 use crate::hooks::pharmacy::use_pharmacy_search;
 use crate::routes::Routes;
+use crate::utils::format_cep;
 
 #[function_component(PharmacySearch)]
 pub fn medication_search() -> Html {
@@ -34,12 +35,13 @@ pub fn medication_search() -> Html {
     
                             html! {
                                 <Card onclick={ &card_click } 
-                                    title={ pharmacy.name.clone().unwrap_or_else(String::new) }>
+                                    title={ pharmacy.name.clone().unwrap_or_else(String::new) }
+                                    icon="fas fa-house-chimney-medical fa-2x">
                                     <p>{ format!("{}, {} - {}",
                                             &pharmacy.address.clone().unwrap_or_else(String::new),
                                             &pharmacy.number.clone().unwrap_or_else(String::new),
                                             &pharmacy.neighborhood.clone().unwrap_or_else(String::new)) }</p>
-                                    <p>{ &pharmacy.cep }</p>
+                                    <p>{ format_cep(pharmacy.cep.clone().unwrap_or_else(String::new).into()) }</p>
                                 </Card>
                             }
                         }).collect::<Html>()

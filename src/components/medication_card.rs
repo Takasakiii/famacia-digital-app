@@ -26,7 +26,9 @@ pub fn medication_card(props: &MedicationCardProps) -> Html {
     let medication = medication.clone();
 
     html! {
-        <Card {onclick} title={ medication.name.unwrap_or_else(String::new) }>
+        <Card {onclick} 
+              title={ medication.name.unwrap_or_else(String::new) } 
+              icon="fas fa-pills fa-2x">
             <p>
                 <b>{"Concentração: "}</b>
                 { medication.concentration.unwrap_or_else(|| "Não informado".to_owned()) }

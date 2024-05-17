@@ -2,7 +2,7 @@ use serde_wasm_bindgen::{from_value, to_value};
 use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsValue;
 use web_sys::HtmlInputElement;
-use yew::{Callback, TargetCast, UseStateHandle};
+use yew::{AttrValue, Callback, TargetCast, UseStateHandle};
 
 pub fn get_inline_style(css: &[(&str, Option<&str>)]) -> String {
     css.iter()
@@ -37,4 +37,12 @@ where
     let args = to_value(args).unwrap();
     let response = invoke(cmd, args).await;
     from_value(response).unwrap()
+}
+
+pub fn format_cep(cep: AttrValue) -> String {
+    if cep.len() == 8 {
+        format!("{}-{}", &cep[0..5], &cep[5..8])
+    } else {
+        cep.to_string()
+    }
 }

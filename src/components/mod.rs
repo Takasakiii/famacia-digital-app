@@ -9,7 +9,6 @@ pub mod screen_padding;
 pub mod spacer;
 pub mod toast;
 pub mod medication_card;
-pub mod pharmacy_card;
 pub mod medication_search;
 pub mod pharmacy_search;
 pub  mod stock_card;
