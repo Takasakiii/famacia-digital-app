@@ -1,6 +1,5 @@
-use stylist::css;
 use stylist::yew::styled_component;
-use yew::{classes, html, Callback, Html, Properties, Classes, AttrValue};
+use yew::{AttrValue, Callback, classes, Classes, html, Html, Properties};
 
 #[derive(PartialEq, Properties)]
 pub struct ButtonProps {

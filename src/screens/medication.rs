@@ -1,4 +1,5 @@
 use yew::{function_component, Html, html, Properties};
+use crate::components::card::Card;
 
 use crate::components::loading::Loading;
 use crate::components::medication_card::MedicationCard;
@@ -23,7 +24,18 @@ pub fn medication(props: &MedicationViewProps) -> Html {
     html! {
         <ScreenPadding>
             if let Some(medication) = medication {
-                <MedicationCard medication={ medication } expanded={true} />
+                <MedicationCard medication={ medication.clone() } expanded={true} />
+                <Card title="Informações" icon="fas fa-info fa-2x">
+                    <p class="has-text-justified">
+                        {"O medicamento "} <strong>{ medication.name.unwrap_or_else(|| "Não informado".to_owned()) }</strong>
+                        {" é um medicamento do tipo "} <strong>{ medication.medication_type.unwrap_or_else(|| "Não informado".to_owned()) }</strong> 
+                        {", apresentado por meio de "} <strong>{ medication.presentation.unwrap_or_else(|| "Não informado".to_owned()) }</strong> 
+                        {", com uma concentração de "} <strong>{ medication.concentration.unwrap_or_else(|| "Não informado".to_owned()) }</strong> {". "}
+                        {"Ele é administrado por via "} <strong>{ medication.administration_form.unwrap_or_else(|| "Não informado".to_owned()) }</strong> 
+                        {", "} <strong>{ if medication.continuous_use == Some(1) { "deve" } else { "não deve" } }</strong> {" ser usado continuamente "}
+                        {"e "} <strong>{ if medication.fractionable == Some(1) { "pode" } else { "não pode" } }</strong> {" ser fracionado."}
+                    </p>
+                </Card>
                 <h4 class="title is-4 my-5">{"Farmácias com estoque"}</h4>
                 {
                     if let Some(stock) = stock {
