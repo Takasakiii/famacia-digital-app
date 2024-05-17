@@ -1,66 +1,63 @@
-use yew::{AttrValue, hook};
+use std::rc::Rc;
 
-#[derive(Clone, PartialEq)]
+use serde::Deserialize;
+use yew::{AttrValue, hook, use_context, use_effect_with, use_state};
+
+use crate::app::MedicationContext;
+use crate::utils::call_tauri;
+
+#[derive(Deserialize, Clone, PartialEq)]
 pub struct Medication {
     pub id: i8,
-    pub name: &'static str,
-    pub concentration: &'static str,
-    pub class: &'static str,
-    pub presentation: &'static str,
-    pub prescription_needed: bool,
+    pub name: Option<String>,
+    pub active_principle: Option<String>,
+    pub administration_form: Option<String>,
+    pub medication_class: Option<i8>,
+    pub classification: Option<i8>,
+    pub prescription_retention: Option<i8>,
+    pub medication_type: Option<String>,
+    pub presentation: Option<String>,
+    pub concentration: Option<String>,
+    pub fractionable: Option<i8>,
+    pub continuous_use: Option<i8>,
+    pub observation: Option<String>,
 }
 
-pub static MEDICATIONS: [Medication; 4] = [
-    Medication {
-        id: 1,
-        name: "Dipirona",
-        concentration: "500mg",
-        class: "Analgésico",
-        presentation: "Comprimido",
-        prescription_needed: false,
-    },
-    Medication {
-        id: 2,
-        name: "Paracetamol",
-        concentration: "750mg",
-        class: "Analgésico",
-        presentation: "Comprimido",
-        prescription_needed: false,
-    },
-    Medication {
-        id: 3,
-        name: "Ibuprofeno",
-        concentration: "400mg",
-        class: "Anti-inflamatório",
-        presentation: "Líquido",
-        prescription_needed: false,
-    },
-    Medication {
-        id: 4,
-        name: "Ritalina",
-        concentration: "10mg",
-        class: "Estimulante",
-        presentation: "Comprimido",
-        prescription_needed: true,
+#[hook]
+pub fn use_medications() -> Option<Rc<Vec<Medication>>> {
+    let medications = use_state(|| None);
+    {
+        let medications = medications.clone();
+
+        use_effect_with((), move |_| {
+            wasm_bindgen_futures::spawn_local(async move {
+                let result: Vec<Medication> =
+                    call_tauri("get_medications", &()).await;
+                medications.set(Some(Rc::new(result)));
+            });
+        });
     }
-];
+    
+    (*medications).clone()
+}
 
 #[hook]
-pub fn use_medications(search: Option<AttrValue>) -> Vec<Medication> {
-    let search = search.map(|search| search.to_string());
+pub fn use_medication_search(search: Option<AttrValue>) -> Option<Rc<Vec<Medication>>> {
+    let medications = use_context::<MedicationContext>().unwrap()?;
+
     if let Some(search) = search {
-        let search = search.to_lowercase();
-        MEDICATIONS
-            .iter()
-            .filter(|medication| medication.name.to_lowercase().contains(&search))
-            .cloned()
-            .collect()
+        let result = medications.iter().filter(|medication| {
+            let search = search.as_str().to_lowercase();
+            medication.name.as_ref().map(|name| name.to_lowercase().contains(&search)).unwrap_or(false)
+        }).cloned().collect::<Vec<Medication>>();
+        Some(Rc::new(result))
     } else {
-        MEDICATIONS.iter().cloned().collect()
+        Some(medications.clone())
     }
 }
 
 #[hook]
 pub fn use_medication(id: i8) -> Option<Medication> {
-    MEDICATIONS.iter().find(|medication| medication.id == id).cloned()
+    let medications = use_context::<MedicationContext>()??;
+    medications.iter().find(|medication| medication.id == id).cloned()
 }

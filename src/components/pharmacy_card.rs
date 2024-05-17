@@ -20,13 +20,16 @@ pub fn pharmacy_card(props: &PharmacyCardProps) -> Html {
             navigator.push(&Routes::Pharmacy { id });
         })
     };
+    
+    let pharmacy = pharmacy.clone();
+    
     html! {
-         <Card {onclick} title={ pharmacy.name.clone() }>
+         <Card {onclick} title={ pharmacy.name.unwrap_or_else(String::new) }>
             <p>{ format!("{}, {} - {}",
-                    &pharmacy.address,
-                    &pharmacy.number,
-                    &pharmacy.neighborhood) }</p>
-            <p>{ &pharmacy.cep }</p>
+                    pharmacy.address.unwrap_or_else(String::new),
+                    pharmacy.number.unwrap_or_else(String::new),
+                    pharmacy.neighborhood.unwrap_or_else(String::new)) }</p>
+            <p>{ &pharmacy.cep.unwrap_or_else(String::new) }</p>
         </Card>
     }
 }

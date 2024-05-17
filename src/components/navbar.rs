@@ -30,7 +30,7 @@ pub fn navbar() -> Html {
                             }
                         }
                         else {
-                                html! {}
+                            html! {}
                         }
                     } else {
                         html! {}

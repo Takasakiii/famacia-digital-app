@@ -1,35 +1,44 @@
-use stylist::yew::styled_component;
-use yew::{Html, html, Properties};
-use crate::components::screen_padding::ScreenPadding;
+use yew::{function_component, Html, html, Properties};
+
 use crate::components::card::Card;
 use crate::components::medication_card::MedicationCard;
-use crate::components::pharmacy_card::PharmacyCard;
+use crate::components::screen_padding::ScreenPadding;
+use crate::components::stock_card::{DisplayType, StockCard};
 use crate::hooks::medication::use_medication;
-use crate::hooks::pharmacy::use_pharmacies;
+use crate::hooks::stock::use_medication_stock;
 
 #[derive(PartialEq, Properties)]
 pub struct MedicationViewProps {
     pub id: i8,
 }
 
-#[styled_component(MedicationView)]
+#[function_component(MedicationView)]
 pub fn medication(props: &MedicationViewProps) -> Html {
     let medication = use_medication(props.id);
-    let pharmacies = use_pharmacies(None);
+    let name =
+        medication.as_ref().map(|medication| medication.name.as_ref().map(|name| name.clone().into())).flatten();
+    
+    let stock = use_medication_stock(name);
+    
 
     html! {
         <ScreenPadding>
             if let Some(medication) = medication {
                 <MedicationCard medication={ medication } expanded={true} />
-
-                <h4 class="title is-4 my-5">{"Disponível em:"}</h4>
                 {
-                    pharmacies.into_iter().map(|pharmacy| {
+                    if let Some(stock) = stock {
+                        stock.iter().map(|stock| {
+                            html! {
+                                <StockCard stock={ stock.clone() }
+                                    display_type={ DisplayType::Pharmacy } />
+                            }
+                        }).collect::<Html>()
+                    } else {
                         html! {
-                            <PharmacyCard pharmacy={ pharmacy } />
+                            <Card title="Carregando..." />
                         }
-                    }).collect::<Html>()
-                }
+                    }
+                 }
             } else {
                 <Card title="Carregando..." />
             }

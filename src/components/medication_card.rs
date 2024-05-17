@@ -22,25 +22,28 @@ pub fn medication_card(props: &MedicationCardProps) -> Html {
             navigator.push(&Routes::Medication { id });
         })
     };
+    
+    let medication = medication.clone();
 
     html! {
-        <Card {onclick} title={ medication.name }>
+        <Card {onclick} title={ medication.name.unwrap_or_else(String::new) }>
             <p>
                 <b>{"Concentração: "}</b>
-                { medication.concentration }
+                { medication.concentration.unwrap_or_else(|| "Não informado".to_owned()) }
             </p>
             <p>
-                <b>{"Apresentação: "}</b>
-                { medication.presentation }
+                <b>{"Princípio ativo: "}</b>
+                { medication.active_principle.unwrap_or_else(|| "Não informado".to_owned()) }
             </p>
             if *expanded {
                 <p>
-                    <b>{"Classe: "}</b>
-                    { medication.class }
-                </p>
-                <p>
-                    <b>{"Necessita de prescrição: "}</b>
-                    { if medication.prescription_needed { "Sim" } else { "Não" } }
+                    <b>{"Receita retida: "}</b>
+                    if medication.prescription_retention == Some(1) {
+                        {"Sim"}
+                    } else {
+                        {"Não"}
+                    } 
+                    
                 </p>
             }
         </Card>
