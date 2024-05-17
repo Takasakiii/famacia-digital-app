@@ -1,6 +1,6 @@
 use yew::{function_component, Html, html, Properties};
 
-use crate::components::card::Card;
+use crate::components::loading::Loading;
 use crate::components::medication_card::MedicationCard;
 use crate::components::screen_padding::ScreenPadding;
 use crate::components::stock_card::{DisplayType, StockCard};
@@ -35,12 +35,12 @@ pub fn medication(props: &MedicationViewProps) -> Html {
                         }).collect::<Html>()
                     } else {
                         html! {
-                            <Card title="Carregando..." />
+                            <Loading />
                         }
                     }
                  }
             } else {
-                <Card title="Carregando..." />
+                <Loading />
             }
         </ScreenPadding>
     }

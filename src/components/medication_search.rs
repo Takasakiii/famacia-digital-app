@@ -1,6 +1,7 @@
 use yew::{function_component, Html, html, use_state};
 
 use crate::components::input::Input;
+use crate::components::loading::Loading;
 use crate::components::medication_card::MedicationCard;
 use crate::hooks::medication::use_medication_search;
 
@@ -29,7 +30,7 @@ pub fn medication_search() -> Html {
                     }
                 } else {
                     html! {
-                        <p>{"Carregando..."}</p>
+                        <Loading />
                     }
                 }
             }

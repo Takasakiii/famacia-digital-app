@@ -2,6 +2,7 @@ use stylist::yew::styled_component;
 use yew::{Html, html, Properties};
 
 use crate::components::card::Card;
+use crate::components::loading::Loading;
 use crate::components::screen_padding::ScreenPadding;
 use crate::components::stock_card::{DisplayType, StockCard};
 use crate::hooks::pharmacy::use_pharmacy;
@@ -54,13 +55,13 @@ pub fn pharmacy(props: &PharmacyViewProps) -> Html {
                         }).collect::<Html>()
                     } else {
                         html! {
-                            <Card title="Carregando..." />
+                            <Loading />
                         }
                     }
                 }
                 
             } else {
-                <Card title="Carregando..." />
+                <Loading />
             }
         </ScreenPadding>
     }

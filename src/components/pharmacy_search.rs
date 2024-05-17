@@ -3,6 +3,7 @@ use yew_router::prelude::use_navigator;
 
 use crate::components::card::Card;
 use crate::components::input::Input;
+use crate::components::loading::Loading;
 use crate::hooks::pharmacy::use_pharmacy_search;
 use crate::routes::Routes;
 
@@ -49,7 +50,7 @@ pub fn medication_search() -> Html {
                     }
                 } else {
                     html! {
-                        <p>{"Carregando..."}</p>
+                        <Loading />
                     }
                 }
             }
