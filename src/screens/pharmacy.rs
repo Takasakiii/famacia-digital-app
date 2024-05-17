@@ -1,4 +1,5 @@
 use stylist::yew::styled_component;
+use url::form_urlencoded::byte_serialize;
 use yew::{Html, html, Properties};
 
 use crate::components::card::Card;
@@ -27,7 +28,17 @@ pub fn pharmacy(props: &PharmacyViewProps) -> Html {
             border-radius: 0.5rem;
         "#
     );
-
+    
+    let cep = format_cep(pharmacy.as_ref().map(|x| x.cep.clone()).flatten().unwrap_or_else(String::new).into());
+    
+    let address = if let Some(pharmacy) = pharmacy.clone() {
+        format!("{}, {} - {}", get_default(pharmacy.address),
+                get_default(pharmacy.number),
+                get_default(pharmacy.neighborhood))
+    } else {
+        String::new()
+    };
+    
     html! {
         <ScreenPadding>
             if let Some(pharmacy) = pharmacy {
@@ -35,16 +46,20 @@ pub fn pharmacy(props: &PharmacyViewProps) -> Html {
                       icon="fas fa-house-chimney-medical fa-2x">
                     <p>
                         <b>{"Endereço: "}</b>
-                        {format!("{}, {} - {}", get_default(pharmacy.address),
-                            get_default(pharmacy.number),
-                            get_default(pharmacy.neighborhood))}
+                        { &address }
                     </p>
                     <p>
                         <b>{"CEP: "}</b>
-                        { format_cep(pharmacy.cep.unwrap_or_else(String::new).into()) }
+                        { &cep }
                     </p>
                 </Card>
-                <iframe class={ iframe_css } src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14629.527727563647!2d-46.63773851598419!3d-23.55472254584241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59a647219c9d%3A0x4af244dffee6ac6!2sDrogaria%20S%C3%A3o%20Paulo!5e0!3m2!1spt-BR!2sbr!4v1714369751096!5m2!1spt-BR!2sbr" allowfullscreen={true} loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    <iframe class={ iframe_css }
+                            src={format!("https://maps.google.com/maps?q={}z=15&output=embed",
+                                byte_serialize(format!("{} - {} - {}", address, "Vargem Grande Paulista", cep).as_bytes()).collect::<String>())}
+                            allowfullscreen={true}
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+            
                 <h4 class="title is-4 my-5">{"Medicamentos disponíveis"}</h4>
                 
                 {
@@ -67,7 +82,6 @@ pub fn pharmacy(props: &PharmacyViewProps) -> Html {
                         }
                     }
                 }
-                
             } else {
                 <Loading />
             }
